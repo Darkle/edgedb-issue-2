@@ -1,4 +1,5 @@
 ﻿open EdgeDB
+open System.Collections.Generic
 
 let config =
     EdgeDBClientPoolConfig(SchemaNamingStrategy = INamingStrategy.DefaultNamingStrategy, ExplicitObjectIds = false)
@@ -36,6 +37,28 @@ let main _ =
                   }
                   """,
                     {| score = 10 |}
+                )
+        with err ->
+            printfn "Error: %A" err
+    }
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
+
+    let queryParams = new Dictionary<string, obj>()
+    queryParams.Add("name", None)
+    queryParams.Add("author", Some("joe"))
+
+    task {
+        try
+            do!
+                dbClient.ExecuteAsync(
+                    """
+                  insert Book{
+                    name := <optional str>$name ?? "hello",
+                    author := <optional str>$author ?? "merp"
+                  }
+                  """,
+                    queryParams
                 )
         with err ->
             printfn "Error: %A" err
