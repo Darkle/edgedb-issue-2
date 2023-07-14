@@ -5,10 +5,6 @@ let config =
 
 let dbClient = EdgeDBClient(config)
 
-[<CLIMutable>]
-type Post =
-    { myOptionalArrayOfStrings: string[] option }
-
 [<EntryPoint>]
 let main _ =
     task {
