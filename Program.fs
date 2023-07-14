@@ -44,6 +44,7 @@ let main _ =
     |> Async.AwaitTask
     |> Async.RunSynchronously
 
+    // Below also errors.
     let queryParams = new Dictionary<string, obj>()
     queryParams.Add("name", None)
     queryParams.Add("author", Some("joe"))
